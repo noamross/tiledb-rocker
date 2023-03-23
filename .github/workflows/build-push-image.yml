@@ -1,0 +1,33 @@
+name: build-and-push-containers
+
+on:
+  push:
+    branches:
+      - master
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  build:
+    steps:
+      - name: Check out Repository
+        uses: actions/checkout@v1
+
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@latest
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push Docker images
+        uses: docker/build-push-action@@latest
+        with:
+          context: .
+          file: Dockerfile
+          push: ${{ github.ref == 'refs/heads/master' }}
+          tags: ${{ env.REGISTRY }}/${{ github.repository }}:base
+
