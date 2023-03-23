@@ -6,4 +6,4 @@ ARG NCPUS=1
 
 RUN /rocker_scripts/install-osgeo-tiledb.sh
 
-COPY test-tiledb.R /home/rstudio/test-tiledb.R
+COPY test-tiledb-raster.R /home/rstudio/test-tiledb-raster.R
